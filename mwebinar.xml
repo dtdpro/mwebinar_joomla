@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.2.0" method="upgrade">
+	<name>com_mwebinar</name>
+	<creationDate>201.03.14</creationDate>
+	<author>DtD Productions</author>
+	<authorEmail>mike@dtdpro.com</authorEmail>
+	<authorUrl>http://www.dtdpro.com</authorUrl>
+	<copyright>(c)2021</copyright>
+	<license>GPL v2</license>
+	<version>1.0</version>
+    <releaseDate>2021.03.14</releaseDate>
+    <releaseType>Update</releaseType>
+	<description>COM_MWEBINAR_DESC</description>
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>mwebinar.php</filename>
+		<filename>router.php</filename>
+		<filename>controller.php</filename>
+		<folder>views</folder>
+		<folder>models</folder>
+		<folder>vendor</folder>
+	</files>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">sql/install.sql</file>
+		</sql>
+	</install>	
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates</schemapath>
+		</schemas>
+	</update>
+	<media destination="com_mams" folder="media">
+		<filename>index.html</filename>
+		<folder>mediaelementjs</folder>
+		<folder>vidplyr</folder>
+		<folder>scripts</folder>
+	</media>
+	<administration>
+		<!-- Administration Menu Section -->
+		<menu>COM_MWEBINAR_MENU</menu>
+		<files folder="admin">
+			<filename>mwebinar.php</filename>
+			<filename>controller.php</filename>
+			<filename>config.xml</filename>
+			<filename>access.xml</filename>
+			<folder>sql</folder>
+			<folder>views</folder>
+			<folder>models</folder>
+			<folder>controllers</folder>
+			<folder>tables</folder>
+			<folder>helpers</folder>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB.com_mwebinar.ini</language>
+			<language tag="en-GB">language/en-GB.com_mwebinar.sys.ini</language>
+		</languages>
+
+	</administration>
+</extension>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="details">
+        <field
+                name="id"
+                type="hidden"
+                class="readonly"
+                label="JGLOBAL_FIELD_ID_LABEL"
+                description ="JGLOBAL_FIELD_ID_DESC"
+                readonly="true"
+        />
+        <field
+                name="name"
+                type="text"
+                label="Name"
+                description=""
+                size="60"
+                class="inputbox input-xxlarge input-large-text"
+                required="true"
+                default=""
+        />
+        <field
+                name="alias"
+                type="text"
+                label="Alias"
+                description=""
+                size="60"
+                class="inputbox"
+                default=""
+        />
+        <field
+                name="published"
+                type="list"
+                id="published"
+                class="chzn-color-state"
+                label="JSTATUS"
+                description="JFIELD_PUBLISHED_DESC"
+                size="1"
+                default="1"
+                filter="integer">
+            <option	value="1">JPUBLISHED</option>
+            <option	value="0">JUNPUBLISHED</option>
+        </field>
+        <fields name="params">
+            <fieldset name="params" label="Options">
+                <field
+                        name="showprogress"
+                        type="radio"
+                        label="Show Progress Bar"
+                        description="Show Progress Bar"
+                        class="btn-group"
+                        default="1">
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+                <field
+                        name="showpagetitle"
+                        type="radio"
+                        label="Show Page Title"
+                        class="btn-group"
+                        default="1">
+                    <option value="0">JHIDE</option>
+                    <option value="1">JSHOW</option>
+                </field>
+            </fieldset>
+        </fields>
+        <field
+                name="content_end"
+                type="editor"
+                label="End Page Content"
+                description="End Page Content"
+                class="inputbox"
+                filter="JComponentHelper::filterText"
+                buttons="true"
+                hide="readmore,pagebreak"
+        />
+
+    </fieldset>
+</form>

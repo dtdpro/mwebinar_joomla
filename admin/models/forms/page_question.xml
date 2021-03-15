@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="details">
+        <field
+                name="id"
+                type="hidden"
+                class="readonly"
+                label="JGLOBAL_FIELD_ID_LABEL"
+                description ="JGLOBAL_FIELD_ID_DESC"
+                readonly="true"
+        />
+        <field
+                name="type"
+                type="hidden"
+                class="readonly"
+                label="JGLOBAL_FIELD_ID_LABEL"
+                description ="JGLOBAL_FIELD_ID_DESC"
+                readonly="true"
+        />
+        <field
+                name="webinar_id"
+                type="hidden"
+                class="readonly"
+                label="JGLOBAL_FIELD_ID_LABEL"
+                description ="JGLOBAL_FIELD_ID_DESC"
+                readonly="true"
+        />
+        <field
+                name="title"
+                type="text"
+                label="Title"
+                description=""
+                size="60"
+                class="inputbox input-xxlarge input-large-text"
+                required="true"
+                default=""
+        />
+        <field
+                name="published"
+                type="list"
+                id="published"
+                class="chzn-color-state"
+                label="JSTATUS"
+                description="JFIELD_PUBLISHED_DESC"
+                size="1"
+                default="1"
+                filter="integer">
+            <option	value="1">JPUBLISHED</option>
+            <option	value="0">JUNPUBLISHED</option>
+        </field>
+        <field
+                name="ordering"
+                type="OrderPage"
+                class="inputbox"
+                label="JFIELD_ORDERING_LABEL"
+                description="JFIELD_ORDERING_DESC"
+        />
+        <fields name="content">
+            <fieldset name="content" label="Content">
+                <field
+                        name="question"
+                        type="text"
+                        label="Question"
+                        description=""
+                        size="60"
+                        class="inputbox input-xxlarge"
+                        default=""
+                />
+                <field
+                        name="questiontype"
+                        type="radio"
+                        label="Answer Type"
+                        description="Show Progress Bar"
+                        class="btn-group"
+                        default="single">
+                    <option value="single">Single</option>
+                    <option value="multi">Multiple</option>
+                </field>
+                <field
+                        name="options"
+                        type="subform"
+                        label="Options"
+                        description=""
+                        layout="joomla.form.field.subform.repeatable-table"
+                        icon="list"
+                        multiple="true"
+                >
+                    <form hidden="true" name="options_subform" repeat="true">
+                        <field
+                                name="name"
+                                type="text"
+                                label="Value"
+                                size="30"
+                        />
+                        <field
+                                name="title"
+                                type="text"
+                                label="Label"
+                                size="30"
+                        />
+                    </form>
+                </field>
+                <fields name="nextpage">
+                    <field
+                            name="id"
+                            type="PageSelect"
+                            class="inputbox"
+                            label="Next Page"
+                            description=""
+                            required="true"
+                    />
+                    <field
+                            name="label"
+                            type="text"
+                            label="Next Button Label"
+                            description=""
+                            size="60"
+                            class="inputbox"
+                            default=""
+                    />
+                </fields>
+                <fields name="prevpage">
+                    <field
+                            name="id"
+                            type="PageSelect"
+                            class="inputbox"
+                            label="Prev Page"
+                            description=""
+                            required="true"
+                    />
+                    <field
+                            name="label"
+                            type="text"
+                            label="Prev Button Label"
+                            description=""
+                            size="60"
+                            class="inputbox"
+                            default=""
+                    />
+                </fields>
+            </fieldset>
+        </fields>
+    </fieldset>
+</form>

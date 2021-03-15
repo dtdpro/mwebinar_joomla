@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<config>
+    <fieldset name="general" label="General" description="Configuration">
+        <field name="uikitversion" type="radio" label="UiKit Version" default="3" class="btn-group">
+            <option value="2">UiKit 2</option>
+            <option value="3">UiKit 3</option>
+        </field>
+    </fieldset>
+    <fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+        <field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_capeprt" section="component" />
+    </fieldset>
+
+</config>

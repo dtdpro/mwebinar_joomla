@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="details">
+        <field
+                name="id"
+                type="hidden"
+                class="readonly"
+                label="JGLOBAL_FIELD_ID_LABEL"
+                description ="JGLOBAL_FIELD_ID_DESC"
+                readonly="true"
+        />
+        <field
+                name="type"
+                type="hidden"
+                class="readonly"
+                label="JGLOBAL_FIELD_ID_LABEL"
+                description ="JGLOBAL_FIELD_ID_DESC"
+                readonly="true"
+        />
+        <field
+                name="webinar_id"
+                type="hidden"
+                class="readonly"
+                label="JGLOBAL_FIELD_ID_LABEL"
+                description ="JGLOBAL_FIELD_ID_DESC"
+                readonly="true"
+        />
+        <field
+                name="title"
+                type="text"
+                label="Title"
+                description=""
+                size="60"
+                class="inputbox input-xxlarge input-large-text"
+                required="true"
+                default=""
+        />
+        <field
+                name="published"
+                type="list"
+                id="published"
+                class="chzn-color-state"
+                label="JSTATUS"
+                description="JFIELD_PUBLISHED_DESC"
+                size="1"
+                default="1"
+                filter="integer">
+            <option	value="1">JPUBLISHED</option>
+            <option	value="0">JUNPUBLISHED</option>
+        </field>
+        <field
+                name="ordering"
+                type="OrderPage"
+                class="inputbox"
+                label="JFIELD_ORDERING_LABEL"
+                description="JFIELD_ORDERING_DESC"
+        />
+        <fields name="content">
+            <fieldset name="content" label="Content">
+                <field
+                        name="instructions"
+                        type="text"
+                        label="Instructions"
+                        description=""
+                        size="60"
+                        class="inputbox input-xxlarge"
+                        default=""
+                />
+                <field
+                        name="jumppoints"
+                        type="subform"
+                        label="Jump Points"
+                        description=""
+                        layout="joomla.form.field.subform.repeatable-table"
+                        icon="list"
+                        multiple="true"
+                >
+                    <form hidden="true" name="jumppoints_subform" repeat="true">
+                        <field
+                                name="id"
+                                type="Page"
+                                class="inputbox input-xlarge"
+                                label="Page"
+                                description=""
+                                required="true"
+                        />
+                        <field
+                                name="title"
+                                type="text"
+                                label="Label"
+                                size="30"
+                                required="true"
+                        />
+                    </form>
+                </field>
+                <fields name="nextpage">
+                    <field
+                            name="id"
+                            type="PageSelect"
+                            class="inputbox input-xlarge"
+                            label="Next Page"
+                            description=""
+                            required="true"
+                    />
+                    <field
+                            name="label"
+                            type="text"
+                            label="Next Button Label"
+                            description=""
+                            size="60"
+                            class="inputbox input-xlarge"
+                            default=""
+                    />
+                </fields>
+                <fields name="prevpage">
+                    <field
+                            name="id"
+                            type="PageSelect"
+                            class="inputbox input-xlarge"
+                            label="Prev Page"
+                            description=""
+                            required="true"
+                    />
+                    <field
+                            name="label"
+                            type="text"
+                            label="Prev Button Label"
+                            description=""
+                            size="60"
+                            class="inputbox input-xlarge"
+                            default=""
+                    />
+                </fields>
+            </fieldset>
+        </fields>
+    </fieldset>
+</form>

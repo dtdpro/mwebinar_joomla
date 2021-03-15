@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <layout title="Webinar">
+        <message>Webinar</message>
+    </layout>
+    <fields name="request">
+        <fieldset name="request" addfieldpath="/administrator/components/com_mwebinar/models/fields">
+            <field name="webinar" type="Webinar" class="inputbox" label="Webinar" description="" required="true"/>
+        </fieldset>
+    </fields>
+</metadata>
