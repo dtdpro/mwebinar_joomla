@@ -1,4 +1,5 @@
-<h1 class="title uk-article-title"><?php echo $this->webinar->name; ?></h1>
+<h1 class="title uk-article-title mwebinar-category"><?php echo $this->webinar->category_title; ?></h1>
+<h3 class="uk-text-bold mwebinar-title"><?php echo $this->webinar->name; ?></h3>
 <div class="uk-text-center">
     <div id="mwebinar-page-title"></div>
 	<?php if ($this->webinar->params->showprogress) { ?>
@@ -15,6 +16,7 @@
         var startPageIndex = 0;
         var numPages = webinarData.numPages;
         var completed = webinarData.completed;
+        var sessionId = webinarData.sessionId;
 
         // Progress Bar
         if (webinarData.params.showprogress == 1) {
@@ -119,11 +121,19 @@
                         html += '<input name="page_question" type="radio"';
                     }
                     html += ' value="' + v.name + '" id="qa_' + v.name + '"';
-                    if (completed[pageIndex]) html += ' disabled="disabled"';
-                    if (completed[pageIndex] == v.name) html += ' checked="checked"';
+                    if (completed[pageIndex]) {
+                        if (pageContent.questiontype == "multi") {
+                            if (completed[pageIndex].indexOf(v.name) != -1) html += ' checked="checked"';
+                        } else {
+                            if (completed[pageIndex] == v.name) html += ' checked="checked"';
+                        }
+                        html += ' disabled="disabled"';
+                    }
                     html += '> <label for="qa_'+ v.name+'">'+ v.title+'</label><br><br>';
                 });
-                html += '</div></div></form>';
+                html += '</div></div>';
+                html += '<input type="hidden" name="page_sessionid" value="'+sessionId+'">';
+                html += '</form>';
                 html += '</div>';
                 jQuery('#mwebinar-page-content').html(html);
 
@@ -134,13 +144,85 @@
                     } else {
                         qcheck += '#webinar_question input:radio:checked';
                     }
-                    if(jQuery(qcheck).length > 0 || completed[pageContent.ordering]) {
+                    if(jQuery(qcheck).length > 0 || completed[pageIndex]) {
                         var webinarqa = jQuery("#webinar_question").serialize();
                         var ansurl = "/index.php?option=com_mwebinar&view=webinar&task=answer&webinar="+webinarId+"&page="+pageContent.id;
-                        if (!completed[pageIndex]) jQuery.post(ansurl, webinarqa);
+                        if (!completed[pageIndex]) {
+                            jQuery.post(ansurl, webinarqa);
+                            if (pageContent.questiontype == "multi") {
+                                var answeredValues = [];
+                                jQuery(qcheck).each(function() {
+                                    answeredValues.push(jQuery(this).val());
+                                });
+                                completed[pageIndex] = answeredValues;
+                            } else {
+                                completed[pageIndex] = jQuery('input[name=page_question]:checked', '#webinar_question').val();
+                            }
+                        }
                         jQuery('#mwebinar-page-next').off('click');
                         jQuery('#mwebinar-page-prev').off('click');
-                        completed[pageIndex] = jQuery('input[name=page_question]:checked', '#webinar_question').val();
+
+                        if (pageContent.nextpage.id != 0) {
+                            goPage(webinarData.pageMatch[pageContent.nextpage.id]);
+                        } else if (pageIndex < (numPages-1)) {
+                            nextPage();
+                        } else {
+                            endPage();
+                        }
+                    } else {
+                        UIkit.modal.alert("An answer is required");
+                    }
+                });
+                jQuery('#mwebinar-page-prev').on('click', function(e) {
+                    jQuery('#mwebinar-page-next').off('click');
+                    jQuery('#mwebinar-page-prev').off('click');
+
+                    if (pageContent.prevpage.id != 0) {
+                        goPage(webinarData.pageMatch[pageContent.prevpage.id]);
+                    } else if (pageIndex == 0) {
+
+                    } else {
+                        prevPage();
+                    }
+                });
+            }
+
+            if (pageType == 'field') {
+                var html = '<div class="uk-margin-top uk-text-left"><div class="uk-text-large uk-text-bold uk-margin-bottom">'+pageContent.question+'</div>';
+                html += '<form name="webinar_field" id="webinar_field" action="" method="post" class="uk-form uk-form-stacked">';
+                jQuery.each(pageContent.fields,function(i,v) {
+                    html += '<div class="uk-form-row">';
+                    html += '<label for="qa_'+ v.name+'" class="uk-form-label">'+ v.title+'</label>';
+                    html += '<div class="uk-form-controls">';
+                    html += '<input class="uk-width-1-1" name="page_field['+v.name+']" type="text"';
+                    if (completed[pageIndex][v.name]) html += 'value="' + completed[pageIndex][v.name] + '"';
+                    html += 'id="qf_' + v.name + '"';
+                    if (completed[pageIndex][v.name]) html += ' disabled="disabled"';
+                    html += '></div></div>';
+                });
+                html += '<input type="hidden" name="page_sessionid" value="'+sessionId+'">';
+                html += '</form>';
+                html += '</div>';
+                jQuery('#mwebinar-page-content').html(html);
+
+                jQuery('#mwebinar-page-next').on('click', function(e) {
+                    var answered = true;
+                    jQuery.each(pageContent.fields,function(i,v) {
+                        if (!jQuery("#qf_"+v.name).val()) answered = false;
+                    });
+                    if(answered || completed[pageIndex]) {
+                        var webinarqa = jQuery("#webinar_field").serialize();
+                        var ansurl = "/index.php?option=com_mwebinar&view=webinar&task=savefield&webinar="+webinarId+"&page="+pageContent.id;
+                        if (!completed[pageIndex]) {
+                            jQuery.post(ansurl, webinarqa);
+                            var answeredValues = {};
+                            jQuery.each(pageContent.fields,function(i,v) {
+                                answeredValues[v.name] = jQuery("#qf_"+v.name).val();
+                            });
+                            completed[pageIndex] = answeredValues;
+                        }
+                        jQuery('#mwebinar-page-next').off('click');
+                        jQuery('#mwebinar-page-prev').off('click');
 
                         if (pageContent.nextpage.id != 0) {
                             goPage(webinarData.pageMatch[pageContent.nextpage.id]);
@@ -178,7 +260,9 @@
                     if (completed[pageIndex] == v.name) html += ' checked="checked"';
                     html += '> <label for="qa_'+ v.name+'">'+ v.title+'</label></div>';
                 });
-                html += '</div></div></div></form>';
+                html += '</div></div></div>';
+                html += '<input type="hidden" name="page_sessionid" value="'+sessionId+'">';
+                html += '</form>';
                 html += '</div>';
                 jQuery('#mwebinar-page-content').html(html);
 

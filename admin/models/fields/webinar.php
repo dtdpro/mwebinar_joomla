@@ -26,8 +26,9 @@ class JFormFieldWebinar extends JFormField
 
 		// Build the query for the ordering list.
 		$query = $db->getQuery(true);
-		$query->select('id AS value, name AS text');
-		$query->from('#__mwebinar_webinars');
+		$query->select('s.id AS value, CONCAT(c.title," - ",s.name) AS text');
+		$query->from('#__mwebinar_webinars as s');
+		$query->join('LEFT', '#__categories AS c ON c.id = s.catid');
 		$query->order('name');
 		$db->setQuery($query);
 		$html[] = '<select name="'.$this->name.'" class="inputbox" '.$attr.'>';

@@ -19,12 +19,15 @@ class MWebinarModelWebinar extends JModelLegacy {
 	function getWebinar($webinar) {
 		$db    = JFactory::getDBO();
 		$config = $this->getConfig();
+		$sessionId = JFactory::getSession()->getId();
 
 		$query = $db->getQuery( true );
-		$query->select( '*' );
-		$query->from( '#__mwebinar_webinars' );
-		$query->where( 'id = ' . $webinar );
-		$query->andWhere( 'published > 0');
+		$query->select( 's.*' );
+		$query->from( '#__mwebinar_webinars as s' );
+		$query->select('c.title AS category_title');
+		$query->join('LEFT', '#__categories AS c ON c.id = s.catid');
+		$query->where( 's.id = ' . $webinar );
+		$query->andWhere( 's.published > 0');
 		$db->setQuery( $query );
 		$webinarData = $db->loadObject();
 
@@ -61,13 +64,13 @@ class MWebinarModelWebinar extends JModelLegacy {
 		$webinarData->pageMatch=$pageMatch;
 		$webinarData->completed = $completed;
 		$webinarData->uikit=$config->uikitversion;
+		$webinarData->sessionId = uniqid($sessionId."_",true);
 
 		return $webinarData;
 	}
 
-	function saveAnswer($webinarId,$pageId,$answer) {
+	function saveAnswer($webinarId,$pageId,$answer,$sessionId) {
 		$db = JFactory::getDBO();
-		$sessionId = JFactory::getSession()->getId();
 		$jinput = JFactory::getApplication()->input;
 		$ip = $jinput->server->get('REMOTE_ADDR');
 
@@ -80,13 +83,40 @@ class MWebinarModelWebinar extends JModelLegacy {
 			$newAnswer->sessionid  = $sessionId;
 			$newAnswer->sourceip   = $db->escape( $ip );
 			if ( ! $db->insertObject( '#__mwebinar_webinaranswer', $newAnswer ) ) {
-				$this->setError( "Error creating session" );
+				$this->setError( "Error saving data" );
 
 				return false;
 			}
 		}
-		return true;
 
+		return true;
+	}
+
+	function saveField($webinarId,$pageId,$answer,$sessionId) {
+		$db = JFactory::getDBO();
+		$jinput = JFactory::getApplication()->input;
+		$ip = $jinput->server->get('REMOTE_ADDR');
+
+		$escapedAnswers = [];
+
+		foreach ($answer as $ak=>$av) {
+			$escapedAnswers[$db->escape($ak)] = $db->escape($av);
+		}
+
+		$newAnswer             = new stdClass();
+		$newAnswer->answer     = json_encode($escapedAnswers);
+		$newAnswer->webinar    = $db->escape( $webinarId );
+		$newAnswer->page       = $db->escape( $pageId );
+		$newAnswer->created_at = date( "Y-m-d H:i:s" );
+		$newAnswer->sessionid  = $sessionId;
+		$newAnswer->sourceip   = $db->escape( $ip );
+		if ( ! $db->insertObject( '#__mwebinar_webinaranswer', $newAnswer ) ) {
+			$this->setError( "Error saving data" );
+
+			return false;
+		}
+
+		return true;
 	}
 
 }

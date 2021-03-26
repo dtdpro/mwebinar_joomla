@@ -29,6 +29,15 @@
                 default=""
         />
         <field
+                name="catid"
+                type="category"
+                extension="com_mwebinar"
+                class="inputbox"
+                label="Category"
+                description=""
+                required="false">
+        </field>
+        <field
                 name="published"
                 type="list"
                 id="published"

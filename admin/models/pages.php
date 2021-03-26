@@ -11,7 +11,7 @@ class MWebinarModelPages extends JModelList
 	{
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'ordering', 'a.ordering',
+				'ordering', 's.ordering',
 			);
 		}
 
@@ -84,12 +84,17 @@ class MWebinarModelPages extends JModelList
 	public function getWebinars() {
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$query->select('*')->from('#__mwebinar_webinars');
+
+		$query->select('s.id, CONCAT(c.title," - ",s.name) AS title');
+		$query->from('#__mwebinar_webinars as s');
+		$query->join('LEFT', '#__categories AS c ON c.id = s.catid');
+		$query->order('name');
 		$db->setQuery($query);
+
 		$webinars = $db->loadObjectList();
 		$webinarsbyid=array();
 		foreach ($webinars as $w) {
-			$webinarsbyid[$w->id] = $w->name;
+			$webinarsbyid[$w->id] = $w->title;
 		}
 		return $webinarsbyid;
 	}

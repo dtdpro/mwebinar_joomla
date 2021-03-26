@@ -8,25 +8,35 @@ JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-
+$listOrder	= $this->escape($this->state->get('list.ordering'));
+$listDirn	= $this->escape($this->state->get('list.direction'));
 $app	= JFactory::getApplication();
 $user	= JFactory::getUser();
 $userId	= $user->get('id');
-$saveOrder = ($this->state->get('filter.webinar'));
+$saveOrder = ($listOrder == 's.ordering');
 $published = $this->state->get('filter.published');
 if ($saveOrder) {
 	$saveOrderingUrl = 'index.php?option=com_mwebinar&task=pages.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'MAMSArtList', 'adminForm', null, $saveOrderingUrl);
+	JHtml::_('sortablelist.sortable', 'MAMSArtList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 ?>
 <script type="text/javascript">
     Joomla.orderTable = function()
     {
         table = document.getElementById("sortTable");
+        direction = document.getElementById("directionTable");
         order = table.options[table.selectedIndex].value;
-        dirn = 'asc';
+        if (order != '<?php echo $listOrder; ?>')
+        {
+            dirn = 'asc';
+        }
+        else
+        {
+            dirn = direction.options[direction.selectedIndex].value;
+        }
         Joomla.tableOrdering(order, dirn, '');
     }
+
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_mwebinar&view=pages'); ?>" method="post" name="adminForm" id="adminForm">
 	<?php if (!empty( $this->sidebar)) : ?>
@@ -72,7 +82,7 @@ if ($saveOrder) {
                     </thead>
                     <tbody>
 					<?php foreach($this->items as $i => $item): ?>
-                        <tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->webionar_id?>">
+                        <tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->webinar_id?>">
                             <td class="order nowrap center hidden-phone">
 								<?php
 								$disableClassName = '';

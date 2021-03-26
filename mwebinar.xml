@@ -7,8 +7,8 @@
 	<authorUrl>http://www.dtdpro.com</authorUrl>
 	<copyright>(c)2021</copyright>
 	<license>GPL v2</license>
-	<version>1.0</version>
-    <releaseDate>2021.03.14</releaseDate>
+	<version>1.2.0</version>
+    <releaseDate>2021.03.26</releaseDate>
     <releaseType>Update</releaseType>
 	<description>COM_MWEBINAR_DESC</description>
 	<files folder="site">
@@ -30,7 +30,7 @@
 			<schemapath type="mysql">sql/updates</schemapath>
 		</schemas>
 	</update>
-	<media destination="com_mams" folder="media">
+	<media destination="com_mwebinar" folder="media">
 		<filename>index.html</filename>
 		<folder>mediaelementjs</folder>
 		<folder>vidplyr</folder>

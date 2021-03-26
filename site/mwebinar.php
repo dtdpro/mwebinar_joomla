@@ -14,9 +14,9 @@ $doc = JFactory::getDocument();
 
 //jQuery
 JHtml::_('jquery.framework');
-$doc->addScript('media/com_mams/mediaelementjs/mediaelement-and-player.js');
+$doc->addScript('media/com_mwebinar/mediaelementjs/mediaelement-and-player.js');
 if (JFactory::getApplication()->input->get('format') != "feed") {
-	$doc->addStyleSheet('media/com_mams/mediaelementjs/mediaelementplayer.css');
+	$doc->addStyleSheet('media/com_mwebinar/mediaelementjs/mediaelementplayer.css');
 }
 
 // Create the controller

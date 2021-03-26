@@ -33,6 +33,8 @@ class MWebinarModelWebinars extends JModelList
 
 		$query->select('s.*');
 		$query->from('#__mwebinar_webinars as s');
+		$query->select('c.title AS category_title');
+		$query->join('LEFT', '#__categories AS c ON c.id = s.catid');
 		$query->order('s.name ASC');
 
 		return $query;

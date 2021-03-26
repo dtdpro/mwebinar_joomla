@@ -40,6 +40,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
                         </th>
                         <th width="1%" style="min-width:55px" class="nowrap center">Published</th>
                         <th>Name</th>
+                        <th>Category</th>
                         <th width="1%">ID</th>
                     </tr>
                     </thead>
@@ -56,6 +57,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
                                 <a href="<?php echo JRoute::_('index.php?option=com_mwebinar&task=webinar.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>"><?php echo $this->escape($item->name); ?></a><br />
                                 <a href="#" onclick="return listItemTask('cb<?php echo $i; ?>','pages.listpages')" class="btn btn-micro" title="Pages"><i class="icon-stack"></i> Pages</a>
                             </td>
+                            <td><?php echo $item->category_title; ?></td>
                             <td><?php echo $item->id; ?></td>
 
                         </tr>

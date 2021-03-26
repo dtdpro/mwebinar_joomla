@@ -47,6 +47,17 @@ class MWebinarControllerPage extends JControllerForm
 		}
 	}
 
+	public function addfield()
+	{
+		$app = JFactory::getApplication();
+		$app->setUserState('com_mwebinar.add.page.type', 'field');
+		$result = parent::add();
+		if ($result instanceof Exception)
+		{
+			return $result;
+		}
+	}
+
 	public function addrating()
 	{
 		$app = JFactory::getApplication();

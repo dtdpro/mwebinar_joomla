@@ -1,0 +1,1 @@
+ALTER TABLE  `#__mwebinar_webinars` ADD  `catid` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `alias`;

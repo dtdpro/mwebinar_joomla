@@ -12,7 +12,7 @@ CREATE TABLE `#__mwebinar_pages`
 CREATE TABLE `#__mwebinar_webinaranswer`
 (
     `id`         int(11) NOT NULL,
-    `answer`       varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+    `answer`     varchar(255) COLLATE utf8_unicode_ci NOT NULL,
     `webinar`    int(11) NOT NULL,
     `page`       int(11) NOT NULL,
     `sessionid`  varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -25,7 +25,8 @@ CREATE TABLE `#__mwebinar_webinars`
     `id`          int(11) NOT NULL,
     `name`        varchar(255) COLLATE utf8_unicode_ci NOT NULL,
     `alias`       varchar(255)                         NOT NULL,
-    `published`   int(11) NOT NULL DEFAULT '1',
+    `catid`       INT( 10 ) UNSIGNED NOT NULL DEFAULT '0',
+    `published`   int (11) NOT NULL DEFAULT '1',
     `params`      longtext COLLATE utf8_unicode_ci     NOT NULL,
     `content_end` text                                 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

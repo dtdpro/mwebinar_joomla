@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modellist');
 
-class MWebinarModelResults extends JModelList
+class MWebinarModelSessions extends JModelList
 {
 
 	protected function populateState($ordering = null, $direction = null)
@@ -29,36 +29,45 @@ class MWebinarModelResults extends JModelList
 		$query->from('#__mwebinar_pages as s');
 		$query->order('s.ordering ASC');
 		$query->where('s.webinar_id = '.(int) $webinar);
-		$query->andWhere('s.type IN ("question","rating")');
+		$query->andWhere('s.type IN ("field","question","rating")');
 		$db->setQuery($query);
 		$questionPages = $db->loadObjectList();
 
-		$results = [];
+		$optionsByPage = [];
+		$pageTypes = [];
 
-		foreach ($questionPages as $qp) {
-			$newResult = [];
-			$total=0;
-			$pageContent = json_decode($qp->content);
-			$question = $pageContent->question;
-			$answers = $pageContent->options;
-			foreach ($answers as &$a) {
-				$query = $db->getQuery(true);
-				$query->select('s.*');
-				$query->from('#__mwebinar_webinaranswer as s');
-				$query->where('s.page = '.(int) $qp->id);
-				$query->where('s.answer = "'.$a->name.'"');
-				$db->setQuery($query);
-				$answerResults = $db->loadObjectList();
-				$a->count = count($answerResults);
-				$total = $total+count($answerResults);
+		foreach ($questionPages as &$qp) {
+			$pageTypes[$qp->id] = $qp->type;
+			$qp->content = json_decode($qp->content);
+			if ($qp->type == "question") {
+				$options = [];
+				foreach ($qp->content->options as $o) {
+					$options[$o->name] = $o->title;
+				}
+				$optionsByPage[$qp->id] = $options;
 			}
-			$newResult['question'] = $question;
-			$newResult['answers'] = $answers;
-			$newResult['total'] = $total;
-			$results[] = $newResult;
 		}
 
-		return $results;
+		$query = $db->getQuery(true);
+		$query->select('s.*');
+		$query->from('#__mwebinar_webinaranswer as s');
+		$query->where('s.webinar = '.(int) $webinar);
+		$query->order('s.created_at desc');
+		$db->setQuery($query);
+		$answerResults = $db->loadObjectList();
+
+		$results = [];
+		foreach ($answerResults as $ar) {
+			$results[$ar->sessionid][0] = $ar->created_at;
+			if ($pageTypes[$ar->page] == "field") $results[$ar->sessionid][$ar->page] = json_decode($ar->answer,true);
+			else if ($pageTypes[$ar->page] == "question") {
+				if (isset($results[$ar->sessionid][$ar->page])) $results[$ar->sessionid][$ar->page] = $results[$ar->sessionid][$ar->page].", ".$optionsByPage[$ar->page][$ar->answer];
+				else $results[$ar->sessionid][$ar->page] = $optionsByPage[$ar->page][$ar->answer];
+			}
+			else $results[$ar->sessionid][$ar->page] = $ar->answer;
+		}
+
+		return ['results'=>$results,'pages'=>$questionPages];
 	}
 
 	public function getWebinars() {

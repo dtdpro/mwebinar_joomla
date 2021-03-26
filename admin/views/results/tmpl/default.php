@@ -43,7 +43,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
         </div>
 </form>
 
-
+<?php if ($this->webinarSelected) { ?>
 <script>
     google.charts.load('current', {'packages':['bar']});
     google.charts.setOnLoadCallback(drawStuff);
@@ -71,3 +71,4 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
     };
 
 </script>
+<?php } ?>
