@@ -46,7 +46,7 @@
 
             // Video Page
             if (pageType == 'video') {
-                var html = '<div align="center"><video src="' + pageContent.video + '" poster="'+pageContent.still+'" width="880" height="495" id="mwebinar-page-video" controls="controls" style="outline:none;margin:0 auto;" class="uk-width-1-1" preload="auto" controls></video></div>';
+                var html = '<div align="center"><video src="' + pageContent.video + '" poster="'+pageContent.still+'" width="768" height="432" id="mwebinar-page-video" controls="controls" style="outline:none;margin:0 auto;" class="uk-width-1-1" preload="auto" controls></video></div>';
                 jQuery('#mwebinar-page-content').html(html);
                 var videoPlayer = new MediaElementPlayer('#mwebinar-page-video', {
                     features: ['playpause', 'progress', 'current', 'duration', 'volume', 'fullscreen','universalgoogleanalytics'],
